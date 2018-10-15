@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class Matrix {
     int x;
     int y;
@@ -21,7 +23,7 @@ public class Matrix {
     }
 
     Matrix mul(Matrix m) {
-        Matrix result = new Matrix(x,y);
+        Matrix result = new Matrix(x, y);
         for (int i = 0; i < x; ++i)
             for (int j = 0; j < y; ++j)
                 for (int k = 0; k < x; ++k)
@@ -29,26 +31,33 @@ public class Matrix {
         return result;
     }
 
-    public static void main(String[] args) {
-        Matrix m = new Matrix(2,2);
-        m.arr[0][0] = 1;
-        m.arr[0][1] = 2;
-        m.arr[1][0] = 3;
-        m.arr[1][1] = 4;
-        Matrix n = new Matrix(2,2);
-        n.arr[0][0] = 1;
-        n.arr[0][1] = 2;
-        n.arr[1][0] = 3;
-        n.arr[1][1] = 4;
+    static Matrix getMatrix() {
+        System.out.print("Podaj wymiary macierzy: ");
+        Scanner reader = new Scanner(System.in);
+        int x = reader.nextInt();
+        int y = reader.nextInt();
+        Matrix ma = new Matrix(x,y);
+        System.out.print("Podaj wartości (wierszami): ");
+        for (int i = 0; i < x; ++i)
+            for (int j = 0; j <y; ++j)
+                 ma.arr[i][j] = reader.nextInt();
 
-        Matrix w = m.add(n);
+        reader.close();
+        return ma;
+    }
 
-        for (int i = 0; i < m.x; ++i) {
-            for (int j = 0; j < m.y; ++j) {
-                System.out.print(w.arr[i][j]);
+    void showMatrix() {
+        for (int i = 0; i < x; ++i) {
+            for (int j = 0; j < y; ++j) {
+                System.out.print(arr[i][j]);
             }
             System.out.println();
         }
+    }
+
+    public static void main(String args[]) {
+        Matrix m = getMatrix();
+        m.showMatrix();
 
     }
 
