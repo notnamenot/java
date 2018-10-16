@@ -31,11 +31,13 @@ public class Test {
                         break;
                 case 4 :
                         choice = 4;
+                        break;
 
                 default :
                         System.out.println("Nie ma takiej możliwości!\n");
                         break;
             }
         }
+        reader.close();
     }
 }
