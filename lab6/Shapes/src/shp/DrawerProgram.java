@@ -9,11 +9,17 @@ public class DrawerProgram extends JFrame {
     public DrawerProgram() {
         super("Shapes");                       //konstruktor nadklasy
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //zamykanie
-        setVisible(true);                               //wyświetlenie
-        setSize(410,430);
-        setLocation(200,200);
-        //setLayout(new FlowLayout());
+
+        setSize(new Dimension(700, 500));
+        setLocationRelativeTo(this);
+        //setLocation(200,200);
+        //setLayout(null);//new FlowLayout());
+
         add(new MyPanel());
+
+
+
+        setVisible(true);                               //wyświetlenie
     }
     public static void main(String[] args) {
 
