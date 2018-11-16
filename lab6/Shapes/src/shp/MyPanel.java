@@ -14,21 +14,25 @@ public class MyPanel extends JPanel implements MouseListener,MouseMotionListener
     private static final int WIDTH = 700;
     private static final int HEIGHT = 500;
 
-
     public MyPanel() {
         addMouseListener(this);
         addMouseMotionListener(this);
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
+        //setLayout(new BorderLayout());
+        mojaLista.add(new Prostokat(0, 0, 200, 150));
         mojaLista.add(new Kwadrat(0, 0, 150, 150));
         mojaLista.add(new Kolo(0, 0, 150, 150));
+        mojaLista.add(new Trojkat(0, 0, 150, 150));
     }
 
-    Shape s;
-    private double x, y;
+    private Shape s;
+    private int x, y;
     private boolean pressOut = false;   //pusczczone
+    private boolean first = true;
 
     public void updateLocation(MouseEvent e) {
-        s.setLocation(x + e.getX(), y + e.getY());
+        s.setLocation(x + e.getX(),y + e.getY());
+        check();
         repaint();
     }
 
@@ -36,8 +40,12 @@ public class MyPanel extends JPanel implements MouseListener,MouseMotionListener
     public void mousePressed(MouseEvent e) {
 
         for (Shape shp : mojaLista)
-            if (shp.contains(e.getPoint()))
+            if (shp.contains(e.getPoint())) {
                 s = shp;
+                first = false;
+            }
+
+        if (first) return;  //jeśli pierwsze kliknięcia nie będą na kształcie
 
         x = s.getX() - e.getX();
         y = s.getY() - e.getY();
@@ -47,17 +55,16 @@ public class MyPanel extends JPanel implements MouseListener,MouseMotionListener
         //System.out.println("tu jestem po kliknięciu: " + x + "," + y);
 
         if (s.contains(e.getPoint())) {
-            System.out.println("mousePressedIf");
             updateLocation(e);
-
-        } else pressOut = true;
+        }
+        else pressOut = true;
     }
 
     @Override
     public void mouseDragged(MouseEvent e) {
+        if (first) return;
 
         if (!pressOut) {
-            //System.out.println("a");
             updateLocation(e);
             //repaint();
         }
@@ -65,12 +72,12 @@ public class MyPanel extends JPanel implements MouseListener,MouseMotionListener
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        //System.out.println("mouseReleased");
+        if (first) return;
+
         if (s.contains(e.getPoint())) {
             updateLocation(e);
-            //System.out.println("V"+s.getX()+" "+s.getY());
-
-        } else pressOut = false;
+        }
+        else pressOut = false;
     }
 
     @Override
@@ -85,7 +92,19 @@ public class MyPanel extends JPanel implements MouseListener,MouseMotionListener
     @Override
     public void mouseMoved(MouseEvent e) {}
 
+    private void check() {
+        if (s.getX() + s.getW() > WIDTH)
+            s.setX(WIDTH - s.getW());
 
+        if (s.getX() < 0)
+            s.setX(0);
+
+        if (s.getY() + s.getH() + 30 > HEIGHT)
+            s.setY(HEIGHT - s.getH()-30);
+
+        if (s.getY() < 0)
+            s.setY(0);
+    }
 
     @Override
     public void paint(Graphics g) {
