@@ -107,23 +107,22 @@ public class Graph extends JPanel implements ActionListener {
         float pix_loc_x2;
         float pix_loc_y2;
 
-        for(int i = 0; i < fs+1; ++i) {
+        for(int i = 0; i <= fs+1; ++i) {
 
             pix_loc_x1 = (graph_loc_x1-graph_width_min)/(number_line_width);
-            pix_loc_y1 = (graph_loc_y1-graph_height_min)/(number_line_height);
+            pix_loc_y1 = HEIGHT-(graph_loc_y1-graph_height_min)/(number_line_height);
             pix_loc_x2 = (graph_loc_x2-graph_width_min)/(number_line_width);
-            pix_loc_y2 = (graph_loc_y2-graph_height_min)/(number_line_height);
+            pix_loc_y2 = HEIGHT-(graph_loc_y2-graph_height_min)/(number_line_height);
 
             g2d.drawLine((int) pix_loc_x1, (int) pix_loc_y1, (int) pix_loc_x2, (int) pix_loc_y2);
-             System.out.println(graph_loc_x1 + " " + graph_loc_y1 + " " + graph_loc_x2 + " " + graph_loc_y2);
-            //System.out.println(pix_loc_x1 + " " + pix_loc_y1 + " " + pix_loc_x2 + " " + pix_loc_y2);
+             //System.out.println(graph_loc_x1 + " " + graph_loc_y1 + " " + graph_loc_x2 + " " + graph_loc_y2);
+            System.out.println(pix_loc_x1 + " " + pix_loc_y1 + " " + pix_loc_x2 + " " + pix_loc_y2);
 
             graph_loc_x1 += interval; //x1=x2;
             graph_loc_y1 = poly(graph_loc_x1); //y1 =y2;
             graph_loc_x2 += interval;
             graph_loc_y2 = poly(graph_loc_x2);
 
-            //System.out.print("Z");
             //repaint();
         }
         //float x1 = 40, y1 = poly(x1), x2 = (from + interval), y2 = poly(x2);
