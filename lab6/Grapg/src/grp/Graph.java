@@ -33,9 +33,9 @@ public class Graph extends JPanel implements ActionListener {
         for (int i = coefs.size(), j= 0; i > 0; --i, ++j) {
             //System.out.println("W");
                 y += Math.pow(x, i-1)*coefs.get(j);
-            //System.out.println("y = "+y);
+            //System.out.println("i= " + i +" y = "+y);
         }
-        return (int) y;
+        return y;
     }
 
 
@@ -115,7 +115,7 @@ public class Graph extends JPanel implements ActionListener {
             pix_loc_y2 = (graph_loc_y2-graph_height_min)/(number_line_height);
 
             g2d.drawLine((int) pix_loc_x1, (int) pix_loc_y1, (int) pix_loc_x2, (int) pix_loc_y2);
-             //System.out.println(graph_loc_x1 + " " + graph_loc_y1 + " " + graph_loc_x2 + " " + graph_loc_y2);
+             System.out.println(graph_loc_x1 + " " + graph_loc_y1 + " " + graph_loc_x2 + " " + graph_loc_y2);
             //System.out.println(pix_loc_x1 + " " + pix_loc_y1 + " " + pix_loc_x2 + " " + pix_loc_y2);
 
             graph_loc_x1 += interval; //x1=x2;
