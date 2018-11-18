@@ -15,7 +15,6 @@ public class TextAndButtonPanel extends JPanel {
     static ArrayList<Integer> coefs;
     private static int from, to, fs;
 
-    public static boolean pressed = false;
 
     private JLabel label_wsp;
     private JLabel label_od;
@@ -87,8 +86,6 @@ public class TextAndButtonPanel extends JPanel {
                 fs = Integer.parseInt(entry_fs.getText());
 
                 System.out.println("coefs: " + coefs +"from: "+from+" to: " + to +" with fs: "+fs);
-
-                pressed = true;
 
             }
         });

@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-import static grp.TextAndButtonPanel.pressed;
 import static grp.TextAndButtonPanel.coefs;
 
 public class Graph extends JPanel implements ActionListener {
@@ -14,7 +13,7 @@ public class Graph extends JPanel implements ActionListener {
     private static final int WIDTH = 800;
     private static final int HEIGHT = 500;
 
-    private ArrayList<Integer> coefs;// = (ArrayList<Integer>) TextAndButtonPanel.getCoefs();
+    //private ArrayList<Integer> coefs;// = (ArrayList<Integer>) TextAndButtonPanel.getCoefs();
     private int from, to, fs;
 
     Graph() {
@@ -26,9 +25,11 @@ public class Graph extends JPanel implements ActionListener {
 
 
     int poly(float x) {
-
         float y = 0;
+        System.out.println("poly");
+
         for (int i = coefs.size(); i > 0; --i) {
+            System.out.println("W");
                 y += Math.pow(x, i)*coefs.get(i-1);
         }
         return (int) y;
@@ -41,19 +42,20 @@ public class Graph extends JPanel implements ActionListener {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 
-        this.setBackground(Color.white);
+        //this.setBackground(Color.white);
 
         from = TextAndButtonPanel.getFrom();
+        System.out.println("from = "+from);
         to = TextAndButtonPanel.getTo();
         fs = TextAndButtonPanel.getFs();
-
+        System.out.println("to = "+to + " fs ="+fs);
         if (fs == 0) return;
 
         int part = ((to - from) / fs);
+        System.out.print("from = " + from + " part =" + part);
         System.out.print("a");
-        int x1 = from, y1 = poly(from), x2 = from + part, y2 = poly(from+part);
+        int x1 = from, y1 = poly(x1), x2 = from + part, y2 = poly(x2);
 
-        //if(pressed == true)
         for(int i = 0; i < fs; ++i) {
             g2d.drawLine(x1,y1,x2,y2);
             x1 += part; //x1=x2;
