@@ -11,7 +11,7 @@ public class TextAndButtonPanel extends JPanel {
     private static final int WIDTH = 500;
     private static final int HEIGHT = 70;
 
-    static ArrayList<Integer> coefs;
+    static ArrayList<Float> coefs;
     private static float from, to, fs;
 
 
@@ -26,7 +26,7 @@ public class TextAndButtonPanel extends JPanel {
     private JButton button_add;
     public static JButton button_draw;
 
-    static ArrayList<Integer> getCoefs() { return coefs; }
+    static ArrayList<Float> getCoefs() { return coefs; }
     static float getFrom() { return from; }
     static float getTo() { return to; }
     static float getFs() { return fs; }
@@ -70,7 +70,7 @@ public class TextAndButtonPanel extends JPanel {
         button_add.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 //System.out.println("coefficent added");
-                coefs.add(Integer.parseInt(entry_wsp.getText()));
+                coefs.add(Float.parseFloat(entry_wsp.getText()));
                 entry_wsp.setText(null);
             }
         });
