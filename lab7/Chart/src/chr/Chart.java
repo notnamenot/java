@@ -22,7 +22,7 @@ import mylib.MyLib;
 
 public class Chart extends Application {
 
-    private int WIDTH = 520;
+    private int WIDTH = 700;
     private int HEIGHT = 500;
 
     ArrayList<Float> coefs;
@@ -125,7 +125,7 @@ public class Chart extends Application {
         button_new_chart.setVisible(false);
 
         tfield_coef = new TextField();
-        tfield_coef.setText("Podawaj współczynniki po jednym");
+            tfield_coef.setText("First");
         tfield_od = new TextField("");
         tfield_do = new TextField("");
         tfield_prob = new TextField("");
@@ -191,7 +191,7 @@ public class Chart extends Application {
         pane_text.setHgap(10);
         pane_text.setVgap(10);
         pane_text.setPadding(new Insets(10, 10, 10, 10));
-        pane_text.setPrefWrapLength(500);
+        pane_text.setPrefWrapLength(WIDTH-20);
         pane_text.setStyle("-fx-background-color: DAE6F3;");
 
         pane_text.getChildren().add(label_wsp);
