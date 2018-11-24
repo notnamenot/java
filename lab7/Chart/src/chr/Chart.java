@@ -4,13 +4,11 @@ import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -18,13 +16,16 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
+
+import mylib.MyLib;
 
 public class Chart extends Application {
 
-    ArrayList<Float> coefs = new ArrayList<>();
+    private int WIDTH = 520;
+    private int HEIGHT = 500;
+
+    ArrayList<Float> coefs;
 
     Text label_wsp ;
     Text label_od;
@@ -48,17 +49,6 @@ public class Chart extends Application {
 
     LineChart linechart;
 
-    float getOd(){
-        return Float.valueOf(tfield_od.getText());
-    }
-
-    float getDo(){
-        return Float.valueOf(tfield_do.getText());
-    }
-
-    float getProb(){
-        return Float.valueOf(tfield_prob.getText());
-    }
 
     private boolean button_draw_check(Button coefs, Button zakres, Button prob) {
         if (!coefs.isDisable() && !zakres.isDisable() && !prob.isDisable())
@@ -67,106 +57,45 @@ public class Chart extends Application {
             return true;
     }
 
-    public static String superscript(String str) {
-        //str = str.replaceAll("0", "⁰");
-
-        str = str.replaceAll("(\\^1)", "");
-        str = str.replaceAll("(\\^2)", "²");
-        str = str.replaceAll("(\\^3)", "³");
-        str = str.replaceAll("(\\^4)", "⁴");
-        str = str.replaceAll("(\\^5)", "⁵");
-        str = str.replaceAll("(\\^6)", "⁶");
-        str = str.replaceAll("(\\^7)", "⁷");
-        str = str.replaceAll("(\\^8)", "⁸");
-        str = str.replaceAll("(\\^9)", "⁹");
-
-        str = str.replaceAll("\\.0","");
-        str = str.replaceAll("(1?x)","x");
-        return str;
+    private boolean check_zakres(float od, float do_) {
+        return do_ < od;
     }
 
-    String polynomial(ArrayList<Float> coefs) {
-        String title_poly = "";
-        float co;
-        for (int i = 0; i < coefs.size(); ++i ) {
-            co = coefs.get(i);
 
-            if (co == 0)
-                continue;
-            if (co > 0 && i!=0)
-                title_poly += "+";
+    private LineChart poly_draw(float od, float do_, float prob) {
+        MyLib myLib = new MyLib();
+        NumberAxis xAxis = new NumberAxis();
+        xAxis.setLabel("x");
 
-            title_poly += co;
+        //float min = myLib.poly_min_max(od,do_,prob,coefs).get(0);
+        //float max = myLib.poly_min_max(od,do_,prob,coefs).get(1);
 
-            if (i+1 == coefs.size())   //jeśli wyraz wolny
-                break;
+        //Defining the y axis
+        //DecimalFormat df = new DecimalFormat("#.##");
+        NumberAxis yAxis = new NumberAxis();
+        yAxis.setLabel("w(x)");
 
-            title_poly += "x^";
-            title_poly += coefs.size()-1-i;
+        //Creating the line chart
+        LineChart linechart = new LineChart(xAxis, yAxis);
+
+        linechart.setTitle("Wykres wielomianu W(x) = " + myLib.polynomial(coefs));
+
+        //Prepare XYChart.Series objects by setting data
+        XYChart.Series series = new XYChart.Series();
+        linechart.setLegendVisible(false);
+
+        float interval = (do_ - od) / prob;
+        for(int i = 0; i <= prob; ++i) {
+            series.getData().add(new XYChart.Data(od, myLib.poly(od,coefs)));
+            od += interval;
         }
 
-        title_poly = superscript(title_poly);
-        System.out.println(title_poly);
+        //Setting the data to Line chart
+        linechart.getData().add(series);
 
-        return title_poly;
+        return linechart;
+
     }
-
-    float poly(float x) {
-        float y = 0;
-        for (int i = coefs.size(), j= 0; i > 0; --i, ++j) {
-            y += Math.pow(x, i-1)*coefs.get(j);
-        }
-        return y;
-    }
-
-    ArrayList<Float> poly_min_max(float from, float to, float fs) {
-        float min = from;
-        float max = from;
-        float interval = (to - from) / fs;
-        for (int i = 0; i < fs + 1; ++i) {                         //znajdowanie ymin i ymax
-            min = poly(from + i * interval) < min ? poly(from + i * interval) : min;
-            max = poly(from + i * interval) > max? poly(from + i * interval) : max;
-        }
-        return new ArrayList<Float>(Arrays.asList(min,max));
-    }
-
-     LineChart poly_draw(float od, float do_, float prob) {
-
-         NumberAxis xAxis = new NumberAxis(od-(do_-od)/10, do_+(do_-od)/10, (do_-od)/10);
-         xAxis.setLabel("x");
-
-         float min = poly_min_max(od,do_,prob).get(0);
-         float max = poly_min_max(od,do_,prob).get(1);
-         //Defining the y axis
-
-         //DecimalFormat df = new DecimalFormat("#.##");
-         NumberAxis yAxis = new NumberAxis(min -(max-min)/10, max+(max-min)/10, (max-min)/10);
-         yAxis.setLabel("y");
-
-         //Creating the line chart
-         LineChart linechart = new LineChart(xAxis, yAxis);
-         //linechart.getData().clear();
-
-         linechart.setTitle("Wykres wielominu " + polynomial(coefs));
-
-         //Prepare XYChart.Series objects by setting data
-         XYChart.Series series = new XYChart.Series();
-
-         //series.setName("Twoja funkcja: " + polynomial(coefs));
-
-         float interval = (do_ - od) / prob;
-         for(int i = 0; i <= prob; ++i) {
-             //System.out.println(od + " " + poly(od));
-             series.getData().add(new XYChart.Data(od, poly(od)));
-             od += interval;
-         }
-
-         //Setting the data to Line chart
-         linechart.getData().add(series);
-
-         return linechart;
-
-     }
 
     @Override
     public void start(Stage stage) {
@@ -196,7 +125,7 @@ public class Chart extends Application {
         button_new_chart.setVisible(false);
 
         tfield_coef = new TextField();
-            tfield_coef.setText("Podawaj współczynniki po jednym");
+        tfield_coef.setText("Podawaj współczynniki po jednym");
         tfield_od = new TextField("");
         tfield_do = new TextField("");
         tfield_prob = new TextField("");
@@ -258,17 +187,13 @@ public class Chart extends Application {
             }
         });
 
-
-        //So you have only one Scene per Stage but possibly several Panes (a Pane is-a Node).
-
         FlowPane pane_text = new FlowPane();
         pane_text.setHgap(10);
         pane_text.setVgap(10);
         pane_text.setPadding(new Insets(10, 10, 10, 10));
-        //.setBackground();
-        //pane_text.setMinSize(600, 50);
-        //myPane.setBottom(label_wsp);
-        //myPane.setBottom(textfield_coef);
+        pane_text.setPrefWrapLength(500);
+        pane_text.setStyle("-fx-background-color: DAE6F3;");
+
         pane_text.getChildren().add(label_wsp);
         pane_text.getChildren().add(tfield_coef);
         pane_text.getChildren().add(button_add_wsp);
@@ -284,18 +209,16 @@ public class Chart extends Application {
         pane_text.getChildren().add(button_redraw);
         pane_text.getChildren().add(button_new_chart);
 
-
         BorderPane myPane = new BorderPane();
         myPane.setTop(pane_text);
-
 
 
         button_add_wsp.setOnAction(actionEvent -> {
             coefs.add(Float.valueOf(tfield_coef.getText()));
             tfield_coef.setText("");
-            tfield_coef.setPromptText("Kolejny współczynnik");
+            tfield_coef.setPromptText("Next");
             button_draw.setDisable(button_draw_check(button_add_wsp,button_add_zakres,button_add_prob));
-            } );
+        } );
 
         button_add_zakres.setOnAction(actionEvent -> {
 
@@ -315,11 +238,16 @@ public class Chart extends Application {
         } );
 
 
-
         button_draw.setOnAction(actionEvent -> {
+            if (!check_zakres(od, do_) == true) {
+                float tmp = od;
+                od = do_;
+                do_ = tmp;
+            }
+
             linechart = poly_draw(od, do_, prob);
             myPane.setBottom(linechart);
-            //button_draw.setVisible(false);
+
             button_draw.setDisable(true);
             button_redraw.setVisible(true);
             button_new_chart.setVisible(true);
@@ -330,8 +258,6 @@ public class Chart extends Application {
             myPane.getChildren().remove(linechart);
             linechart = poly_draw(od, do_, prob);
             myPane.setBottom(linechart);
-
-
         });
 
         button_new_chart.setOnAction(actionEvent -> {
@@ -344,25 +270,18 @@ public class Chart extends Application {
         } );
 
 
-        //myPane.setTop(poly_draw(od,  do_,  prob));
-        //pane_chart.setAlignment(Pos.TOP_CENTER);
-        //pane_text.add(linechart,1,1);
-
         //Creating a Group object
         //Group root = new Group(linechart,pane_text);
         Group root = new Group();
         //Retrieving the observable list object
         ObservableList list = root.getChildren();//The getChildren() method of the Group class gives you an object of the ObservableList class which holds the nodes. We can retrieve this object and add nodes to it
-
         //Setting the text object as a node
         list.add(myPane);
-        //list.add(pane_chart);
-
-
 
         //Creating a scene object
-        Scene scene = new Scene(root, 800, 600);
+        Scene scene = new Scene(root, WIDTH, HEIGHT);
 
+        stage.setResizable(false);
         //Setting title to the Stage
         stage.setTitle("Line Chart");
 
