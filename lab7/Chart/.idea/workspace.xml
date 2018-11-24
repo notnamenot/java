@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="31c87d60-e402-4ea3-9387-2c17979cf8c4" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/lib.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Chart.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Chart.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chr/Chart.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chr/Chart.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chr/PanelText.java" beforeDir="false" />
-    </list>
+    <list default="true" id="31c87d60-e402-4ea3-9387-2c17979cf8c4" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -119,8 +113,8 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1542751951861" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Library.jar!/" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1543061487748" />
+    <property name="last_opened_file_path" value="C:/Program Files/JetBrains/javafx-sdk-11.0.1/lib" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
