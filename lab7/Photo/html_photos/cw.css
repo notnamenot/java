@@ -1,0 +1,191 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+	background-color: rgb(165, 162, 195);/*SlateBlue;*/
+}
+ 
+p {	text-indent: 4em; /*wcięcia*/
+	margin-top:0;
+}	
+
+#main p:first-letter { 
+	color: rgb(47, 39, 151);
+	font-style: oblique;	/*ukośne*/
+    	font-size: x-large;
+}
+
+h1 {
+	color: black;
+	font-weight: bold;
+	letter-spacing: 1cm;	/*odstępy między literami*/
+}
+
+h2 { 
+	color: #3c3c3c; 
+	font-family: helvetica,"Times New Roman";
+}
+
+h3 { 	
+	font-family: cursive, Times, serif;  
+	color: #787878;
+	
+}
+
+#main {		/*tresc;The #id selector styles the element with the specified id.*/
+
+	float: right;
+	max-width: 960px;
+	background-color: rgb(100, 83, 128);
+	/*width:79%;*/
+	margin-top: 2%;
+	padding: 10px;
+	margin-right: 3%
+}
+
+#tytul {
+	width: 100%;
+	text-align: center;
+	color: rgb(48, 22, 114);
+	font-size: 50px;
+	padding: 4px;
+	background-color: rgb(210, 197, 208);
+}
+
+
+#menu {
+	font-size: x-large;
+	float: left;
+	/*position: fixed;	*//*position: fixed; An element with position: fixed; is positioned relative to the viewport, which means it always stays in the same place even if the page is scrolled*/
+	text-align: center;
+	color: rgb(51, 46, 194);
+	/*background-color: rgb(210, 170, 218);	*/
+	width: 420px;
+	margin-left: 3%;
+	margin-top: 2%;
+	padding: 2px;
+	border: 5px solid rgb(100, 83, 128);
+}
+
+#menu ul, #menu ul li{
+
+	border: 2px solid rgb(51, 46, 194); 
+	list-style: none;	/*bez kropek/literek/cyferek*/
+	margin: 2px;
+	padding: 2px;
+}
+
+#menu ul {
+	background-color: rgb(210, 197, 208);
+}
+
+#menu ul li {
+	font-size: large;
+	background-color: rgb(165, 162, 195);
+}
+
+#menu a:hover {		/*a link when the user mouses over it; tylko z menu*/
+	color: white;
+	background-color: rgb(181, 168, 195);
+}
+
+a {
+	cursor: default;	/*nie zmienia się na łapkę*/
+	text-decoration: none;	/*bez podkreślenia*/
+}
+
+.linki {
+	font-size: x-large;
+    	float: left;
+	/*position: fixed;	*//*position: fixed; An element with position: fixed; is positioned relative to the viewport, which means it always stays in the same place even if the page is scrolled*/
+	text-align: center;
+	color: rgb(51, 46, 194);
+	/*background-color: rgb(210, 170, 218);	*/
+	width: 420px;
+	margin-left: 3%;
+	margin-top: 2%;
+	padding: 2px;
+	
+}
+/***********************************************************cw3*/
+
+
+table {
+	border: 5px solid #3c3c3c; 
+	border-collapse: collapse;	/*wewnętrzene krawędzie tabeli*/
+	background-color: rgb(186, 50, 128);
+}
+	
+td { 
+	 border: 1px solid #3c3c3c;
+}
+
+th {
+	height: 50px;
+	width: 200px;
+	text-transform: uppercase;
+	text-align: center;
+}
+
+thead { 
+	color:white;
+	background-color:black;
+	text-transform:uppercase;
+}
+
+tfoot {
+	text-transform:uppercase;
+	font-family: helvetica;
+}
+.cell1 {		/*wszystkie elementy z class="cell1", a tr.cell1 tylko td z tą klasą*/
+	background-color: pink;
+}
+
+.col1 {
+	background-color: rgb(159, 83, 128);
+}
+
+ol {
+	list-style-type: upper-roman;
+}
+
+ol ol {
+	list-style-type: lower-roman;
+}
+
+ol ol ol {
+	list-style-type: lower-greek;
+}
+
+/***********************************************************cw4*/
+
+.slon {
+	float: left;
+	margin: 10px;
+	
+}
+
+.val {
+	float: right;
+}
+
+
+@media (max-width: 800px) {
+	.linki {
+		width: 100%;
+		float: none;
+		position: relative;
+		display: inline-block;
+    	}
+	#menu {
+		display: none;
+		width: 100%;
+		float: none;
+		position: relative;
+		display: inline-block;
+   	 }
+	.linki:hover ul.menu {
+        	display: block;
+    	}
+}
