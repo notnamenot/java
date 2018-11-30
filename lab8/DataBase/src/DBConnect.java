@@ -1,11 +1,22 @@
 import java.sql.*;
 
 public class DBConnect {
-    public Connection con = null;
-    private Statement st = null;
-    private ResultSet rs = null;
+    //Connection con = null;
+    //Statement st = null;
+    //ResultSet rs = null;
 
-    public DBConnect() {
+    public static Connection DBConnector() {
+        try {
+            Connection con;
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://mysql.agh.edu.pl:3306/ipachel","ipachel","vobkRh7ahTwGpMkR");
+            return con;
+        } catch (ClassNotFoundException | SQLException e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+    /*public DBConnect() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");//!!!! ssh javatutorial20 sql
             con = DriverManager.getConnection("jdbc:mysql://mysql.agh.edu.pl:3306/ipachel","ipachel","vobkRh7ahTwGpMkR");
@@ -20,7 +31,7 @@ public class DBConnect {
         catch(Exception e){
             e.printStackTrace();
         }
-        /*finally {
+        finally {
             if(con != null) {
                 try {
                     con.close();
@@ -28,8 +39,8 @@ public class DBConnect {
                     e.printStackTrace();
                 }
             }
-        }*/
-    }
+        }
+    }*/
 
 
     /*public void connect (){
@@ -88,7 +99,7 @@ public class DBConnect {
         }
     }*/
 
-    public void getData() {
+   /* public void getData() {
         try {
             String query = "select * from books";
             rs = st.executeQuery(query);
@@ -111,10 +122,5 @@ public class DBConnect {
     public void addUser() throws SQLException {
         st = con.createStatement();
         st.executeUpdate("INSERT INTO tabela1 (nazwisko) "+ "values ('Bobek')");
-    }
+    }*/
 }
-
-
-
-
-

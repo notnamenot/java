@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/DataBase.iml" filepath="$PROJECT_DIR$/DataBase.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DatBase.iml" filepath="$PROJECT_DIR$/DatBase.iml" />
     </modules>
   </component>
 </project>
