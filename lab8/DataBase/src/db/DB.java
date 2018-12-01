@@ -1,26 +1,19 @@
+package db;
+
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.sql.*;
 import java.util.function.Predicate;
 import java.util.regex.Matcher;
@@ -28,134 +21,26 @@ import java.util.regex.Pattern;
 
 
 public class DB extends Application {
-    Connection con;
-    PreparedStatement pst = null;
-    ResultSet rs = null;
+    private Connection con;
+    private PreparedStatement pst = null;
+    private ResultSet rs = null;
 
-    Button but_load;
-    Label label_add_book;
-    TextField tfield_isbn, tfield_title, tfield_author, tfield_year, tfield_search;
+    private Button but_load;
+    private Label label_add_book;
+    private TextField tfield_isbn, tfield_title, tfield_author, tfield_year, tfield_search;
 
-    TableView<Book> table;
-    final ObservableList<Book> data = FXCollections.observableArrayList();
-
-    //final ObservableList options_isbn = FXCollections.observableArrayList();
-    //final ObservableList options_auth = FXCollections.observableArrayList();
-
-    //private Statement st = null;
-    //private ResultSet rs = null;
-    //TextField isbn,title,author,year;
+    private TableView<Book> table;
+    private final ObservableList<Book> data = FXCollections.observableArrayList();
 
 
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("Baza danych");
         CheckConnection();
-        //fillComboBoxISBN();
-        //fillComboBoxAUTH();
+
+        primaryStage.setTitle("Baza danych");
 
         BorderPane layout = new BorderPane();
-        Scene newScene = new Scene(layout,830,500,Color.rgb(0,0,0,0.4));
-
-        //crate transprent stage
-        //primaryStage.initStyle(StageStyle.TRANSPARENT);
-        //Group root = new Group();
-        //Scene scene = new Scene(root, 320,250,Color.rgb(0,0,0,0.4));
-        /*Color foreground = Color.rgb(255,255,255,0.9);
-        //rectngle background
-        Rectangle background = new Rectangle(320,250);
-        background.setX(0);
-        background.setY(0);
-        background.setArcHeight(15);
-        background.setArcWidth(15);
-        background.setFill(Color.rgb(0,0,0,0.55));
-        background.setStroke(foreground);
-        background.setStrokeWidth(1.5);
-        */
-
-        /*VBox vbox = new VBox(5);
-        vbox.setPadding(new Insets(10,0,0,10));
-
-
-        Label label = new Label("Label");
-        label.setTextFill(Color.WHITESMOKE);
-        label.setFont(new Font("SanSerif",20));
-*/
-        /*
-        TextField isbn = new TextField();
-        isbn.setFont(Font.font("SanSerif",20));
-        isbn.setPromptText("isbane");
-        isbn.setOnKeyPressed(e-> {
-            if (e.getCode() == KeyCode.ENTER) {
-                try {
-                    String query =  "select * from books where isbn=?;";
-                    pst = con.prepareStatement(query);
-                    pst.setString(1, isbn.getText());
-                    rs = pst.executeQuery();
-
-                    if (rs.next()) {
-                        label.setText("isbn found");
-                        primaryStage.setScene(newScene);//nowa scena likwiduje poprzednią
-                        primaryStage.show();
-                    }
-                    else {
-                        label.setText("isbn not found ");
-                    }
-                    isbn.clear();
-                    pst.close();
-                    rs.close();
-                } catch(Exception e1) {
-                    label.setText("SQL Error");
-                    System.err.println(e1);
-                }
-            }
-        });
-        //PasswordField password = new PasswordField();
-        //password.setFont(Font.font("SanSerif",20));
-        //password.setPromptText("password");
-
-        Button btn = new Button("isbn");
-        btn.setFont(Font.font("SanSerif",15));
-        btn.setOnAction(e -> {
-            try {
-                String query =  "select * from books where isbn=?;";
-                pst = con.prepareStatement(query);
-                pst.setString(1, isbn.getText());
-                rs = pst.executeQuery();
-
-                if (rs.next()) {
-                    label.setText("isbn found");
-                    primaryStage.setScene(newScene);//nowa scena likwiduje poprzednią
-                    primaryStage.show();
-                }
-                else {
-                    label.setText("isbn not found ");
-                }
-                isbn.clear();
-                pst.close();
-                rs.close();
-            } catch(Exception e1) {
-                label.setText("SQL Error");
-                System.err.println(e1);
-            }
-        });
-
-        Button back = new Button("back");
-        back.setFont(Font.font("SanSerif",15));
-        back.setOnAction(e -> {
-            primaryStage.setScene(scene);
-            primaryStage.show();
-        });
-        layout.setTop(back);
-        BorderPane.setAlignment(back, Pos.TOP_RIGHT);
-        BorderPane.setMargin(back, new Insets(10));
-        */
-
-
-
-        //vbox.getChildren().addAll(label, isbn, btn);
-        //root.getChildren().addAll(background,vbox);
-
+        Scene scene = new Scene(layout,840,500,Color.rgb(0,0,0,0.4));
 
 
         VBox fields = new VBox(5);
@@ -163,9 +48,7 @@ public class DB extends Application {
         but_load = new Button("Show Table");
         but_load.setMaxHeight(300);
         but_load.setFont(Font.font("SanSerif",20));
-        but_load.setOnAction(e -> {
-            refreshTable();
-        });
+        but_load.setOnAction(e -> refreshTable());
 
         tfield_search = new TextField();
         tfield_search.setFont(Font.font("SanSerif",15));
@@ -173,9 +56,8 @@ public class DB extends Application {
         tfield_search.setMinHeight(50);
         tfield_search.setMaxWidth(300);
 
-        label_add_book = new Label("Add Book");
+        label_add_book = new Label("Add db.Book");
         label_add_book.setFont(new Font("SanSerif",20));
-
 
         tfield_isbn = new TextField();
         tfield_isbn.setFont(Font.font("SanSerif",20));
@@ -213,7 +95,7 @@ public class DB extends Application {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Information Dialog");
                     alert.setHeaderText(null);
-                    alert.setContentText("Book added");
+                    alert.setContentText("db.Book added");
                     alert.showAndWait();
 
                     pst.execute();
@@ -221,15 +103,11 @@ public class DB extends Application {
                     pst.close();
                     clearFields();
                 } catch(Exception e1){
-                    //label.setText("SQL Error");
                     System.err.println(e1);
                 }
                 refreshTable();
-                //fillComboBoxISBN();
-                //fillComboBoxAUTH();
             }
         });
-
 
 
         fields.getChildren().addAll(but_load,tfield_search, label_add_book, tfield_isbn, tfield_title, tfield_author, tfield_year,but_save);
@@ -241,15 +119,15 @@ public class DB extends Application {
         table = new TableView<>();
 
         TableColumn col1 = new TableColumn("ISBN");
-        col1.setMinWidth(100);
+        col1.setMinWidth(120);
         col1.setCellValueFactory(new PropertyValueFactory<>("isbn"));
 
         TableColumn col2 = new TableColumn("TITLE");
-        col2.setMinWidth(190);
+        col2.setMinWidth(200);
         col2.setCellValueFactory(new PropertyValueFactory<>("title"));
 
         TableColumn col3 = new TableColumn("Author");
-        col3.setMinWidth(130);
+        col3.setMinWidth(150);
         col3.setCellValueFactory(new PropertyValueFactory<>("author"));
 
         TableColumn col4 = new TableColumn("Year");
@@ -264,98 +142,12 @@ public class DB extends Application {
         layout.setRight(table);
         BorderPane.setMargin(table, new Insets(10,10,10,10));
 
-        /*
-        HBox hBox= new HBox(5);
-        layout.setBottom(hBox);
-        BorderPane.setMargin(hBox, new Insets(10,0,10,10));
 
 
-        ComboBox comboBoxIsbn = new ComboBox(options_isbn);
-        comboBoxIsbn.setMaxHeight(30);
-        comboBoxIsbn.setOnAction(e -> {
-            try {
-                String query = "SELECT * FROM books WHERE isbn=?;";
-                pst = con.prepareStatement(query);
-                pst.setString(1,(String)comboBoxIsbn.getSelectionModel().getSelectedItem());
-                rs = pst.executeQuery();
-
-                while (rs.next()) {
-                    tfield_isbn.setText(rs.getString("isbn"));
-                    tfield_title.setText(rs.getString("title"));
-                    tfield_author.setText(rs.getString("author"));
-                    tfield_year.setText(rs.getString("year"));
-                }
-
-                pst.close();
-                rs.close();
-
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            }
-
-        });
-        hBox.getChildren().add(comboBoxIsbn);
-
-
-        ComboBox comboBoxAuth = new ComboBox(options_auth);
-        comboBoxAuth.setMaxHeight(30);
-        comboBoxAuth.setOnAction(e -> {
-            try {
-                String query = "SELECT * FROM books WHERE author=?;";
-                pst = con.prepareStatement(query);
-                pst.setString(1,(String)comboBoxAuth.getSelectionModel().getSelectedItem());
-                rs = pst.executeQuery();
-
-                while (rs.next()) {
-                    tfield_isbn.setText(rs.getString("isbn"));
-                    tfield_title.setText(rs.getString("title"));
-                    tfield_author.setText(rs.getString("author"));
-                    tfield_year.setText(rs.getString("year"));
-                }
-
-                pst.close();
-                rs.close();
-
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            }
-
-        });
-        hBox.getChildren().add(comboBoxAuth);
-        */
-
-        /*ListView list = new ListView(options_isbn);
-        list.setMaxSize(100,250);
-        layout.setLeft(list);
-        BorderPane.setMargin(list, new Insets(10));
-        list.setOnMouseClicked(e-> {
-            try {
-                String query = "SELECT * FROM books WHERE isbn=?;";
-                pst = con.prepareStatement(query);
-                pst.setString(1,(String)list.getSelectionModel().getSelectedItem());
-                rs = pst.executeQuery();
-
-                while (rs.next()) {
-                    tfield_isbn.setText(rs.getString("isbn"));
-                    tfield_title.setText(rs.getString("title"));
-                    tfield_author.setText(rs.getString("author"));
-                    tfield_year.setText(rs.getString("year"));
-                }
-
-                pst.close();
-                rs.close();
-
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            }
-        });
-        */
-
-        FilteredList<Book> filtered_isbn = new FilteredList<>(data,e -> true);
+        FilteredList<Book> filtered_isbn = new FilteredList<>(data, e -> true);
         tfield_search.setOnKeyReleased(e -> {
             tfield_search.textProperty().addListener((observableValue, oldValue, newValue) -> {
                 filtered_isbn.setPredicate((Predicate<? super Book>) book -> {
-                    //table.getColumns().addAll(col1,col2,col3,col4);
                     if(newValue == null || newValue.isEmpty()) {
                         return true;
                     }
@@ -374,9 +166,12 @@ public class DB extends Application {
             table.setItems(sortedData);
         });
 
-        primaryStage.setScene(newScene);
+
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
+
+
 
 
     private boolean validateIsbn() {
@@ -467,7 +262,7 @@ public class DB extends Application {
     }
 
 
-    public void refreshTable() {
+    private void refreshTable() {
         data.clear();
         try {
             String query = "SELECT * FROM books;";
@@ -493,44 +288,6 @@ public class DB extends Application {
     }
 
 
-    /*public void fillComboBoxISBN() {
-        try {
-            String query = "SELECT isbn FROM books;";
-            pst = con.prepareStatement(query);
-            rs = pst.executeQuery();
-
-            while(rs.next()) {
-                options_isbn.add(rs.getString("ISBN"));
-            }
-
-            pst.close();
-            rs.close();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    public void fillComboBoxAUTH() {
-        try {
-            //String query = "SELECT SUBSTRING(author, LOCATE(' ', author) + 1, 200) AS author FROM books;";
-            String query = "SELECT author FROM books;";
-            pst = con.prepareStatement(query);
-            rs = pst.executeQuery();
-
-            while(rs.next()) {
-                options_auth.add(rs.getString("Author"));
-            }
-
-            pst.close();
-            rs.close();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-    }*/
 
     private void clearFields() {
         tfield_isbn.clear();
@@ -539,16 +296,8 @@ public class DB extends Application {
         tfield_year.clear();
     }
 
-    public void CheckConnection(){
-        //con = DBConnect.DBConnector();
-        /*if (con == null) {
-            System.out.println("Connection Not Successful");
+    private void CheckConnection(){
 
-            System.exit(1);
-        }
-        else {
-            System.out.println("Connection Successful");
-        }*/
         for (int i=0; i< 3; ++i) {
             con = DBConnect.DBConnector();
             if (con == null){
